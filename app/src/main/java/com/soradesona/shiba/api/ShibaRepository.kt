@@ -5,9 +5,9 @@ import kotlinx.coroutines.delay
 import retrofit2.Response
 import javax.inject.Inject
 
-class ShibaRepository @Inject constructor(private val apiService: ApiService) {
+class ShibaRepository @Inject constructor(private val apiService: ApiService) : ShibaRepositoryInterface {
 
-    suspend fun getShibaList(imagesCount: String): Response<List<String>> {
+    override suspend fun getShibaList(imagesCount: String): Response<List<String>> {
         return apiService.getShibaList(imagesCount)
     }
 

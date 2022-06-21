@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+   <PreferenceCategory
+       app:title="Settings">
+
+      <SeekBarPreference
+          app:key="images_to_download"
+          app:title="Pictures"
+          app:summary="Images count to download"
+          app:showSeekBarValue="true"
+          app:defaultValue= "100" />
+
+   </PreferenceCategory>
+
+
+</PreferenceScreen>

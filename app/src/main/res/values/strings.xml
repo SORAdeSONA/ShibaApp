@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ShibaInu</string>
+    <string name="title_holder">ShibaInu</string>
+    <string name="prefs_theme_key">notifications</string>
+    <string name="prefs_feedback_key">feedback</string>
+    <string name="oops_error">Oops, error</string>
+    <string name="click_to_retry">Click to retry</string>
+</resources>

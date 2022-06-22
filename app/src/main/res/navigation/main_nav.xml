@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_listFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_image_view_fragment"
+            app:destination="@id/ImageViewFragment" />
     </fragment>
 
     <fragment
@@ -21,6 +24,15 @@
         android:label="Settings">
         <action
             android:id="@+id/action_settingsFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ImageViewFragment"
+        android:name="com.soradesona.shiba.fragments.ImageViewFragment"
+        android:label="ImageViewFullScreen">
+        <action
+            android:id="@+id/action_image_view_fragment_to_listFragment"
             app:destination="@id/listFragment" />
     </fragment>
 </navigation>

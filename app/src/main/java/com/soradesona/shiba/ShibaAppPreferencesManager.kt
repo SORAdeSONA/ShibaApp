@@ -7,7 +7,8 @@ import androidx.preference.PreferenceManager
 class ShibaAppPreferencesManager(context: Context) {
     var shibaPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    fun getImagesToDownloadCount() : Int = shibaPreferences.getInt(IMAGES_TO_DOWNLOAD_KEY, 0)
+    // Settings prefs
+    fun getImagesToDownloadCount() : Int = shibaPreferences.getInt(IMAGES_TO_DOWNLOAD_KEY, 100)
 
     companion object {
         private const val IMAGES_TO_DOWNLOAD_KEY = "images_to_download"

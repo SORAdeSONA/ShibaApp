@@ -18,7 +18,7 @@ class ShibaViewModel @Inject constructor(private val shibaRepository: ShibaRepos
 
     private val shibaPreferencesManager = ShibaAppPreferencesManager(context.applicationContext)
 
-    var prefsImagesCount : String = shibaPreferencesManager.getImagesToDownloadCount().toString()
+    private var prefsImagesCount : String = shibaPreferencesManager.getImagesToDownloadCount().toString()
 
     private val _loadingStatus = MutableLiveData<StatusEnum>()
     val loadingStatus: LiveData<StatusEnum> get() = _loadingStatus
@@ -35,8 +35,10 @@ class ShibaViewModel @Inject constructor(private val shibaRepository: ShibaRepos
             _loadingStatus.value = StatusEnum.LOADING
             try {
                 val response = shibaRepository.getShibaList(prefsImagesCount)
-                if (response.isSuccessful) _loadingStatus.value = StatusEnum.SUCCESS
-                _shibaResponse.value = response.body()
+                if (response.isSuccessful && response.body() != null) {
+                    _loadingStatus.value = StatusEnum.SUCCESS
+                    _shibaResponse.value = response.body()
+                }else _loadingStatus.value = StatusEnum.ERROR
             } catch (e: Exception) {
                 println(e)
                 _loadingStatus.value = StatusEnum.ERROR

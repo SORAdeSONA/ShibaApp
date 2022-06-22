@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -19,13 +17,16 @@ import com.soradesona.shiba.viewmodel.ShibaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.list_fragment.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListFragment : Fragment() {
+class ListFragment() : Fragment() {
 
-    private lateinit var mAdapter: ShibaAdapter
+    private val viewModel: ShibaViewModel by viewModels()
+
+    @Inject lateinit var mAdapter: ShibaAdapter
+
     private lateinit var mRecyclerView: RecyclerView
-    val viewModel: ShibaViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +45,6 @@ class ListFragment : Fragment() {
     }
 
     private fun setViews() {
-        mAdapter = ShibaAdapter()
         mRecyclerView = main_recycler_view
         mRecyclerView.apply {
             adapter = mAdapter

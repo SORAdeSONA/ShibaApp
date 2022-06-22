@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/riiple_background.xml" value="0.2305" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/image_view_fragment.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/list_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.2" />
         <entry key="app/src/main/res/layout/shiba_rv_item.xml" value="0.25" />

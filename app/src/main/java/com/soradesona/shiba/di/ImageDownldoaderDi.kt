@@ -1,5 +1,6 @@
 package com.soradesona.shiba.di
 
+import android.app.Application
 import com.soradesona.shiba.ShibaImageDownloader
 import com.soradesona.shiba.adapter.ShibaAdapter
 import dagger.Module
@@ -9,11 +10,11 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ShibaAdapterDi {
+object ImageDownldoaderDi {
 
     @Provides
-    fun provideShibaAdapter(shibaImageDownloader: ShibaImageDownloader): ShibaAdapter {
-        return ShibaAdapter(shibaImageDownloader)
+    fun provideShibaImageDownloader(context: Application) : ShibaImageDownloader {
+        return ShibaImageDownloader(context)
     }
 
 }

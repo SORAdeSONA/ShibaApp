@@ -1,7 +1,5 @@
 package com.soradesona.shiba.api
 
-import com.soradesona.shiba.model.ShibaModel
-import kotlinx.coroutines.delay
 import retrofit2.Response
 import javax.inject.Inject
 

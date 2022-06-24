@@ -40,7 +40,7 @@ class ShibaImageDownloader (val context: Context) {
             setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setAllowedOverRoaming(false)
                 .setTitle(url.substring(url.lastIndexOf("/") + 1))
-                .setDescription("")
+                .setDescription("Downloaded with ShibaInu")
                 .setDestinationInExternalPublicDir(
                     directory.toString(),
                     url.substring(url.lastIndexOf("/") + 1)

@@ -96,6 +96,11 @@ class ListFragment() : Fragment() {
             findNavController().navigate(R.id.action_listFragment_to_settingsFragment)
         }
 
+        swipe.setOnRefreshListener {
+            viewModel.loadShibaList()
+            swipe.isRefreshing = false
+        }
+
     }
 
 

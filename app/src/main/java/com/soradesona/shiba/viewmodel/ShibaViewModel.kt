@@ -14,9 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ShibaViewModel @Inject constructor(private val shibaRepository: ShibaRepository, @ApplicationContext context: Context) : ViewModel() {
-
-    private val shibaPreferencesManager = ShibaAppPreferencesManager(context.applicationContext)
+class ShibaViewModel @Inject constructor(
+    private val shibaRepository: ShibaRepository,
+    private val shibaPreferencesManager: ShibaAppPreferencesManager
+    ) : ViewModel() {
 
     private var prefsImagesCount : String = shibaPreferencesManager.getImagesToDownloadCount().toString()
 

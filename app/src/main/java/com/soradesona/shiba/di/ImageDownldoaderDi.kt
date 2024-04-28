@@ -2,7 +2,6 @@ package com.soradesona.shiba.di
 
 import android.app.Application
 import com.soradesona.shiba.ShibaImageDownloader
-import com.soradesona.shiba.adapter.ShibaAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

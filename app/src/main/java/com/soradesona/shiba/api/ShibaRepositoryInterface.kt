@@ -4,6 +4,6 @@ import retrofit2.Response
 
 interface ShibaRepositoryInterface {
 
-    suspend fun getShibaList(imagesCount: String): Response<List<String>>
+    suspend fun getList(type: String, imagesCount: String): Response<List<String>>
 
 }

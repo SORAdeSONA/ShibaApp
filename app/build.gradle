@@ -1,22 +1,28 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android-extensions'
     id "kotlin-kapt"
     id "dagger.hilt.android.plugin"
+    id 'androidx.navigation.safeargs'
 }
 
 android {
-    compileSdk 32
+    namespace 'com.soradesona.shiba'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.soradesona.shiba"
-        minSdk 21
-        targetSdk 32
+        minSdk 24
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -36,7 +42,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -56,12 +62,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.41"
-    kapt "com.google.dagger:hilt-android-compiler:2.41"
+    implementation "com.google.dagger:hilt-android:2.46"
+    kapt "com.google.dagger:hilt-android-compiler:2.46"
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.6"
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.6"
 
     // ImageViewer
     implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'

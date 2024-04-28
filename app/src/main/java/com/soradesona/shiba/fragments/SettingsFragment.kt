@@ -4,49 +4,61 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
-import com.soradesona.shiba.*
+import com.soradesona.shiba.databinding.FragmentSettingsBinding
 import com.soradesona.shiba.viewmodel.ShibaViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import dagger.hilt.android.AndroidEntryPoint
 
-class SettingsFragment : PreferenceFragmentCompat(){
+@AndroidEntryPoint
+class SettingsFragment : Fragment() {
+
+    private val viewModel: ShibaViewModel by viewModels()
+
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setVisibilityOnViewCreated()
-        initButtons()
+
+        setButtons()
+    }
+
+    private fun setButtons() {
+
+        binding.textViewSeekBarValue.text = viewModel.imageCount
+
+        binding.seekBar.progress = viewModel.imageCount.toInt()
+
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, newValue: Int, fromUser: Boolean) {
+                binding.textViewSeekBarValue.text = newValue.toString()
+                viewModel.setImagesCountToLoad(newValue)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        setVisibilityOnDestroyView()
-    }
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_xml, rootKey)
-    }
-
-    private fun setVisibilityOnViewCreated() {
-        requireActivity().settings_button.visibility = View.GONE
-        requireActivity().main_toolbar.title = ""
-        requireActivity().settings_back.visibility = View.VISIBLE
-    }
-
-    private fun setVisibilityOnDestroyView() {
-        requireActivity().settings_button.visibility = View.VISIBLE
-        requireActivity().main_toolbar.title = "ShibaInu"
-        requireActivity().settings_back.visibility = View.GONE
-    }
-
-    private fun initButtons() {
-        requireActivity().settings_back.setOnClickListener {
-            findNavController().navigate(R.id.action_settingsFragment_to_listFragment)
-        }
+        _binding = null
     }
 }

@@ -7,48 +7,57 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.soradesona.shiba.R
 import com.soradesona.shiba.RecyclerViewPaddingItemDecoration
-import com.soradesona.shiba.adapter.ShibaAdapter
+import com.soradesona.shiba.ShibaImageDownloader
+import com.soradesona.shiba.adapter.CommonAdapter
+import com.soradesona.shiba.databinding.ListFragmentBinding
 import com.soradesona.shiba.status.StatusEnum
 import com.soradesona.shiba.viewmodel.ShibaViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.list_fragment.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListFragment() : Fragment() {
 
     private val viewModel: ShibaViewModel by viewModels()
 
-    @Inject lateinit var mAdapter: ShibaAdapter
+    private val args: ListFragmentArgs by navArgs()
 
-    private lateinit var mRecyclerView: RecyclerView
+    private var commonAdapter : CommonAdapter? = null
+
+    private var shibaImageDownloader: ShibaImageDownloader? = null
+
+    private var _binding: ListFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.list_fragment, container, false);
+        _binding = ListFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.loadList(args.categoryName)
         setViews()
         setObservers()
         initButtons()
     }
 
     private fun setViews() {
-        mRecyclerView = main_recycler_view
-        mRecyclerView.apply {
-            adapter = mAdapter
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        shibaImageDownloader = ShibaImageDownloader(this.requireContext())
+
+        commonAdapter = CommonAdapter(shibaImageDownloader!!, args.categoryName)
+
+        binding.commonRv.apply {
+            adapter = commonAdapter
+            layoutManager = LinearLayoutManager(this.context)
             addItemDecoration(
                 RecyclerViewPaddingItemDecoration()
             )
@@ -59,48 +68,55 @@ class ListFragment() : Fragment() {
         viewModel.loadingStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 StatusEnum.LOADING -> {
-                    mRecyclerView.visibility = View.GONE
-                    progress_bar_loading.visibility = View.VISIBLE
-                    error.visibility = View.GONE
+                    binding.commonRv.visibility = View.GONE
+                    binding.progressBarLoading.visibility = View.VISIBLE
                 }
                 StatusEnum.SUCCESS -> {
-                    mRecyclerView.visibility = View.VISIBLE
-                    progress_bar_loading.visibility = View.GONE
-                    error.visibility = View.GONE
+                    binding.commonRv.visibility = View.VISIBLE
+                    binding.progressBarLoading.visibility = View.GONE
+                    binding.error.visibility = View.GONE
                 }
                 StatusEnum.ERROR -> {
-                    error.visibility = View.VISIBLE
+                    binding.error.visibility = View.VISIBLE
                 }
                 else -> println("should not happen")
             }
         }
 
-        viewModel.shibaResponse.observe(viewLifecycleOwner) { shibas ->
-            renderShibaList(shibas)
-        }
-    }
-
-    private fun renderShibaList(shibas: List<String>) {
-        mAdapter.apply {
-            addData(shibas)
-            notifyDataSetChanged()
+        viewModel.listResponse.observe(viewLifecycleOwner) { typeList ->
+            commonAdapter?.addData(typeList)
         }
     }
 
     private fun initButtons() {
-        error.setOnClickListener {
-            viewModel.loadShibaList()
+
+        when(args.categoryName){
+            "shibes" -> binding.mainTitle.text = "Shibas"
+            "cats" -> binding.mainTitle.text = "Cats"
+            "birds" -> binding.mainTitle.text = "Birds"
         }
 
-        requireActivity().settings_button.setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_settingsFragment)
+        binding.error.setOnClickListener {
+            viewModel.loadList(args.categoryName)
         }
 
-        swipe.setOnRefreshListener {
-            viewModel.loadShibaList()
-            swipe.isRefreshing = false
+
+        binding.swipe.setOnRefreshListener {
+            viewModel.loadList(args.categoryName)
+            binding.swipe.isRefreshing = false
         }
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        commonAdapter = null
+        shibaImageDownloader = null
+        _binding = null
     }
 
 

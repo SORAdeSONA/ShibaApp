@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 class ShibaRepository @Inject constructor(private val apiService: ApiService) : ShibaRepositoryInterface {
 
-    override suspend fun getShibaList(imagesCount: String): Response<List<String>> {
-        return apiService.getShibaList(imagesCount)
+    override suspend fun getList(type: String, imagesCount: String): Response<List<String>> {
+        return apiService.getList(type, imagesCount)
     }
 
 }

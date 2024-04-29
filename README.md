@@ -5,7 +5,7 @@ Shibainu is an Android app that allows users to browse and download images of sh
 ## Features
 
 - Browse and download images of shibas, cats, and birds.
-- Adjust the count of images to download.
+- Adjust the count of images to download or enable endless paging. 
 - Store downloaded images on the device.
 
 ## Libraries Used

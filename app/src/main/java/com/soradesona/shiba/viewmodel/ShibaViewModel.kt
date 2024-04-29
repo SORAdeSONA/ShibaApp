@@ -4,11 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.soradesona.shiba.ShibaAppPreferencesManager
 import com.soradesona.shiba.api.ShibaRepository
+import com.soradesona.shiba.paging.MainPagingSource
 import com.soradesona.shiba.status.StatusEnum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,17 +25,30 @@ class ShibaViewModel @Inject constructor(
     private val shibaPreferencesManager: ShibaAppPreferencesManager
 ) : ViewModel() {
 
-    var imageCount = shibaPreferencesManager.getImagesToDownloadCount().toString()
-
-    private val _loadingStatus = MutableLiveData<StatusEnum>()
-    val loadingStatus: LiveData<StatusEnum> get() = _loadingStatus
-
     private val _listResponse = MutableLiveData<List<String>>()
     val listResponse: LiveData<List<String>> get() = _listResponse
 
+    val loadingStatusMain = MutableLiveData<StatusEnum?>()
+
+    var imageCount = shibaPreferencesManager.getImagesToDownloadCount().toString()
+
+    var pagingTypeToDownload = ""
+
+    var loadListPaging: Flow<PagingData<String>> = createPager()
+
+    private fun createPager(): Flow<PagingData<String>> {
+        return Pager(PagingConfig(pageSize = 40, initialLoadSize = 40)) {
+            MainPagingSource(shibaRepository, pagingTypeToDownload, loadingStatusMain)
+        }.flow.cachedIn(viewModelScope)
+    }
+
+    fun refreshData() {
+        loadListPaging = createPager()
+    }
+
     fun loadList(listType: String) {
         viewModelScope.launch {
-            _loadingStatus.value = StatusEnum.LOADING
+            loadingStatusMain.value = StatusEnum.LOADING
 
             withContext(Dispatchers.IO) {
                 val response = shibaRepository.getList(
@@ -38,18 +57,27 @@ class ShibaViewModel @Inject constructor(
                 )
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful && response.body() != null) {
-                        _loadingStatus.value = StatusEnum.SUCCESS
+                        loadingStatusMain.value = StatusEnum.SUCCESS
                         _listResponse.value = response.body()
                         println(response.body())
-                    } else _loadingStatus.value = StatusEnum.ERROR
+                    } else loadingStatusMain.value = StatusEnum.ERROR
                 }
 
             }
         }
     }
 
+
     fun setImagesCountToLoad(count: Int) {
         shibaPreferencesManager.setImagesToDownloadCount(count)
+    }
+
+    fun setCurrentDownloadType(value: Boolean) {
+        return shibaPreferencesManager.setDownloadType(value)
+    }
+
+    fun getCurrentDownloadType() : Boolean{
+        return shibaPreferencesManager.getDownloadType()
     }
 
 }

@@ -13,7 +13,14 @@ class ShibaAppPreferencesManager(context: Context) {
         shibaPreferences.edit().putInt(IMAGES_TO_DOWNLOAD_KEY, count).apply()
     }
 
+    fun getDownloadType() : Boolean = shibaPreferences.getBoolean(DOWNLOAD_TYPE, false)
+
+    fun setDownloadType(value: Boolean){
+        shibaPreferences.edit().putBoolean(DOWNLOAD_TYPE, value).apply()
+    }
+
     companion object {
         private const val IMAGES_TO_DOWNLOAD_KEY = "images_to_download"
+        private const val DOWNLOAD_TYPE = "download_type"
     }
 }

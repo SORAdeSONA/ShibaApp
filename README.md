@@ -1,15 +1,17 @@
-# ShibaApp
-Application with uploading pictures from shibe.online
+# Shibainu
 
-Libraries: Retrofit, Glide, ViewModel, Hilt, Navigation, Settings (preferences)
-Architecture: MVVM
+Shibainu is an Android app that allows users to browse and download images of shibas, cats, and birds from the [Shibe.online](https://shibe.online/) API. Users can adjust the count of images to download and store them on their devices.
 
-One activity + two fragments (list + settings)
+## Features
 
+- Browse and download images of shibas, cats, and birds.
+- Adjust the count of images to download.
+- Store downloaded images on the device.
 
-Додаток з завантаженням картинок з api shibe.online
+## Libraries Used
 
-Бібліотеки: Retrofit, Glide, ViewModel, Hilt, Navigation, Settings (preferences)
-Архітектура: MVVM
-
-Одна активність + два фрагменти (лист + налаштування)
+- **Retrofit**: For making network requests to the Shibe.online API.
+- **Glide**: For efficient image loading and caching.
+- **ViewModel and LiveData**: For managing UI-related data in a lifecycle-conscious way.
+- **Hilt**: For dependency injection.
+- **Navigation**: For handling navigation between fragments.
